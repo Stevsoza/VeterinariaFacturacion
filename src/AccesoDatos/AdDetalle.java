@@ -79,7 +79,7 @@ public class AdDetalle {
             ps.setDouble(7, dServicio.getPrecio());
             ps.setDouble(8, dServicio.getDescuento());
             ps.setDouble(9, dServicio.getTotal());
-            ps.execute();
+            ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
 
