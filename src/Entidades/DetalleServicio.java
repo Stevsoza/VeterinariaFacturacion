@@ -17,7 +17,7 @@ public class DetalleServicio extends Detalle {
     
     //constructors
     public DetalleServicio(int id_servicio, String descripcion,int id_veterinario, int id_animal, int id_venta, int cantidad, double descuento, double precio, double total) {
-        super(id_venta, descripcion,cantidad, descuento, precio, total);
+        super(id_venta, descripcion, cantidad, descuento, precio, total);
         this.id_servicio = id_servicio;
         this.id_veterinario = id_veterinario;
         this.id_animal = id_animal;

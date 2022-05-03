@@ -37,7 +37,7 @@ public class AdDetalle {
         int resultado = -1;
 
         String sentencia = "insert into Detalle_producto(id_venta, id_producto, descripcion, cantidad, precio, descuento, total)"
-                + "         values(?,?,?,?,?,?,?)";
+                + "values(?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, dProducto.getId_venta());
@@ -47,7 +47,7 @@ public class AdDetalle {
             ps.setDouble(5, dProducto.getPrecio());
             ps.setDouble(6, dProducto.getDescuento());
             ps.setDouble(7, dProducto.getTotal());
-            ps.execute();
+            ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
 

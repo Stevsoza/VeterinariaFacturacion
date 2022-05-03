@@ -119,7 +119,7 @@ public class Venta extends javax.swing.JFrame {
         if (modelo1.getRowCount() > 0 || modelo2.getRowCount() > 0) {
             if (modelo1.getRowCount() > 0) {
                 for (int i = 0; i < modelo1.getRowCount(); i++) {
-                    subtotal += (double) tblProductos.getValueAt(i, 5);
+                    subtotal += (double) tblProductos.getValueAt(i, 6);
                 }
             }
             if (modelo2.getRowCount() > 0) {
@@ -549,7 +549,7 @@ public class Venta extends javax.swing.JFrame {
             } else {
                 LnVenta logica = new LnVenta();
                 Entidades.Venta venta;
-                int resultado;
+                int resultado = -1;
                 venta = new Entidades.Venta(
                         Integer.parseInt(txtFacturaId.getText()),
                         Integer.parseInt(txtClienteId.getText()),
@@ -565,8 +565,8 @@ public class Venta extends javax.swing.JFrame {
                         resultado = logica.Insertar(venta);
                         if (resultado > -1) {
                             LnDetalle logicaDetalle = new LnDetalle();
-                            for (int i = 0; i < modelo2.getRowCount(); i++) {
-                                DetalleServicio dServicio = new DetalleServicio();
+                            DetalleServicio dServicio = new DetalleServicio();
+                            for (int i = 0; i < modelo2.getRowCount(); i++) {                                
                                 dServicio.setId_venta(Integer.parseInt(txtFacturaId.getText()));
                                 dServicio.setId_servicio((int) tblServicios.getValueAt(i, 0));
                                 dServicio.setDescripcion(tblServicios.getValueAt(i, 1).toString());
@@ -576,11 +576,12 @@ public class Venta extends javax.swing.JFrame {
                                 dServicio.setDescuento((double) tblServicios.getValueAt(i, 5));
                                 dServicio.setPrecio((double) tblServicios.getValueAt(i, 6));
                                 dServicio.setTotal((double) tblServicios.getValueAt(i, 7));
-
                                 resultado = logicaDetalle.insertarDetalleS(dServicio);
                             }
+                            
+                            int resultado2 = -1;
+                            DetalleProducto dProducto = new DetalleProducto();
                             for (int i = 0; i < modelo1.getRowCount(); i++) {
-                                DetalleProducto dProducto = new DetalleProducto();
                                 dProducto.setId_venta(Integer.parseInt(txtFacturaId.getText()));
                                 dProducto.setId_producto((int) tblProductos.getValueAt(i, 0));
                                 dProducto.setDescripcion(tblProductos.getValueAt(i, 1).toString());
@@ -589,10 +590,9 @@ public class Venta extends javax.swing.JFrame {
                                 dProducto.setPrecio((double) tblProductos.getValueAt(i, 4));
                                 dProducto.setDescuento((double) tblProductos.getValueAt(i, 5));
                                 dProducto.setTotal((double) tblProductos.getValueAt(i, 6));
-
-                                resultado = logicaDetalle.insertarDetalleP(dProducto);
+                                resultado2 = logicaDetalle.insertarDetalleP(dProducto);
                             }
-                            if (resultado > -1) {
+                            if (resultado2 > -1) {
                                 JOptionPane.showMessageDialog(null, "Factura Guardada");
                             }
                         }
@@ -622,12 +622,12 @@ public class Venta extends javax.swing.JFrame {
         if (tblProductos.getSelectedRow() > -1) {
             int fila = tblProductos.getSelectedRow();
             Object cantidad = (int) tblProductos.getValueAt(fila, 3);
-            Object total = (double) tblProductos.getValueAt(fila, 5);
+            Object total = (double) tblProductos.getValueAt(fila, 6);
             if ((int) cantidad - 1 > 0) {
                 total = (double) total - (double) tblProductos.getValueAt(fila, 4);
                 cantidad = (int) cantidad - 1;
                 tblProductos.setValueAt(cantidad, fila, 3);
-                tblProductos.setValueAt(total, fila, 5);
+                tblProductos.setValueAt(total, fila, 6);
                 cargarCalculo();
             } else {
                 JOptionPane.showMessageDialog(null, "no se puede quitar más cantidad, elimine Producto si asi lo desea con el boton 'Eliminar'");
@@ -664,7 +664,7 @@ public class Venta extends javax.swing.JFrame {
                     //se calcula el total con la cantidad actual
                     total = Integer.parseInt(cantidad.toString()) * Double.parseDouble(tblProductos.getValueAt(fila, 4).toString());
                     //se coloca la cantidad total del producto
-                    tblProductos.setValueAt(total, fila, 5);
+                    tblProductos.setValueAt(total, fila, 6);
                     cargarCalculo();
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay suficiente existencia");
